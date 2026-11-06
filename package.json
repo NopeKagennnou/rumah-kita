@@ -1,0 +1,47 @@
+{
+  "name": "rumah-kita",
+  "version": "1.2.0",
+  "description": "Privacy-First Open-Source Household, Smart Home & Community (RT/RW) Management Platform for Desktop & Web",
+  "keywords": [
+    "rumah-kita",
+    "household-management",
+    "smart-home",
+    "community-management",
+    "rt-rw",
+    "family-finance",
+    "electron",
+    "open-source",
+    "privacy-first",
+    "indonesia"
+  ],
+  "homepage": "https://github.com/NopeKagennnou/rumah-kita#readme",
+  "bugs": {
+    "url": "https://github.com/NopeKagennnou/rumah-kita/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NopeKagennnou/rumah-kita.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "NopeKagennnou",
+    "url": "https://github.com/NopeKagennnou"
+  },
+  "type": "module",
+  "main": "./src/main/electron-main.js",
+  "bin": {
+    "rumah-kita": "./bin/rumah-kita.js"
+  },
+  "scripts": {
+    "start": "node src/server/index.js",
+    "dev": "node --watch src/server/index.js",
+    "electron": "electron .",
+    "test": "node --test tests/*.test.js",
+    "lint": "node scripts/lint-and-audit.js",
+    "security:scan": "node scripts/privacy-guard.js --scan",
+    "sync:windows": "powershell -ExecutionPolicy Bypass -File scripts/sync-from-local-windows.ps1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

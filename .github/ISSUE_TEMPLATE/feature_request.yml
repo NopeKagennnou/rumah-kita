@@ -1,0 +1,19 @@
+name: Feature Request
+description: Suggest a new Smart Home, Finance, or Community (RT/RW) feature for Rumah Kita
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or Use Case
+      description: What household or community problem does this feature solve?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe how you envision this feature working.
+    validations:
+      required: true

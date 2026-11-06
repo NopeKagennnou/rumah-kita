@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rumah Kita — Smart Home, Keuangan Keluarga & Komunitas RT/RW</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Top Navigation Bar -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5z" />
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title-row">
+            <h1 id="householdName">Rumah Kita</h1>
+            <span class="badge badge-oss">MIT Open Source v1.2.0</span>
+          </div>
+          <p class="brand-subtitle" id="communityUnit">Platform Manajemen Rumah Tangga, Smart Home &amp; Lingkungan RT/RW</p>
+        </div>
+      </div>
+
+      <div class="topbar-actions">
+        <div class="privacy-pill" id="privacyBadge" title="Seluruh data tersimpan secara lokal tanpa bocor ke pihak ketiga">
+          <span class="status-dot"></span>
+          <span>Privacy Guard: Anti-Leak Aktif</span>
+        </div>
+        <button class="btn btn-secondary" id="exportSanitizedBtn" type="button">
+          Ekspor Data Aman (Sanitized JSON)
+        </button>
+      </div>
+    </header>
+
+    <!-- KPI Summary Row -->
+    <section class="kpi-grid" aria-label="Ringkasan Metrik Utama">
+      <article class="kpi-card kpi-finance">
+        <div class="kpi-header">
+          <span class="kpi-label">Saldo Kas Rumah &amp; Keluarga</span>
+          <span class="kpi-tag" id="savingsRateTag">Hemat 0%</span>
+        </div>
+        <div class="kpi-value" id="kpiBalance">Rp 0</div>
+        <div class="kpi-sub">
+          <span>Masuk: <strong id="kpiIncome">Rp 0</strong></span>
+          <span>Keluar: <strong id="kpiExpense">Rp 0</strong></span>
+        </div>
+      </article>
+
+      <article class="kpi-card kpi-energy">
+        <div class="kpi-header">
+          <span class="kpi-label">Beban Smart Home &amp; IoT</span>
+          <span class="kpi-tag" id="activeDevicesTag">0/0 Aktif</span>
+        </div>
+        <div class="kpi-value" id="kpiWatts">0 W</div>
+        <div class="kpi-sub">
+          <span>Estimasi: <strong id="kpiMonthlyKwh">0 kWh/bln</strong></span>
+          <span>~<strong id="kpiElectricityCost">Rp 0</strong></span>
+        </div>
+      </article>
+
+      <article class="kpi-card kpi-inventory">
+        <div class="kpi-header">
+          <span class="kpi-label">Inventaris &amp; Logistik Dapur</span>
+          <span class="kpi-tag" id="lowStockTag">Stok Aman</span>
+        </div>
+        <div class="kpi-value" id="kpiInventoryCount">0 Item</div>
+        <div class="kpi-sub" id="kpiLowStockList">Semua kebutuhan pokok mencukupi</div>
+      </article>
+
+      <article class="kpi-card kpi-tasks">
+        <div class="kpi-header">
+          <span class="kpi-label">Agenda Keluarga &amp; Warga</span>
+          <span class="kpi-tag" id="completedTasksTag">0 Selesai</span>
+        </div>
+        <div class="kpi-value" id="kpiPendingTasks">0 Aktif</div>
+        <div class="kpi-sub">Jadwal pemeliharaan rumah &amp; gotong royong</div>
+      </article>
+    </section>
+
+    <!-- Main Content Grid -->
+    <main class="main-grid">
+      <!-- Left Column: Finance & Smart Home -->
+      <div class="column">
+        <!-- Finance Panel -->
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>Keuangan &amp; Anggaran Rumah Tangga</h2>
+              <p>Pencatatan kas masuk/keluar transparan dan bebas pelacakan</p>
+            </div>
+          </div>
+
+          <form id="transactionForm" class="inline-form">
+            <input type="text" id="trxTitle" placeholder="Keterangan transaksi (mis. Belanja Sayur / Iuran RT)" required />
+            <select id="trxCategory">
+              <option value="Groceries">Kebutuhan Dapur</option>
+              <option value="Utilities">Listrik, Air &amp; Internet</option>
+              <option value="Community">Kas Lingkungan RT/RW</option>
+              <option value="Maintenance">Perawatan Rumah</option>
+              <option value="Income">Pemasukan / Kas Masuk</option>
+            </select>
+            <input type="number" id="trxAmount" placeholder="Nominal (mis. -150000 atau 500000)" required />
+            <input type="text" id="trxMember" placeholder="Penanggung Jawab" value="Anggota Rumah" />
+            <button type="submit" class="btn btn-primary">+ Catat Transaksi</button>
+          </form>
+
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Tanggal</th>
+                  <th>Keterangan</th>
+                  <th>Kategori</th>
+                  <th>Oleh</th>
+                  <th class="text-right">Nominal (IDR)</th>
+                </tr>
+              </thead>
+              <tbody id="transactionsTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Smart Home IoT Panel -->
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>Kontrol Perangkat Smart Home &amp; Energi</h2>
+              <p>Monitoring konsumsi daya real-time per ruangan</p>
+            </div>
+          </div>
+          <div class="device-grid" id="devicesContainer"></div>
+        </section>
+      </div>
+
+      <!-- Right Column: Inventory, Tasks & Privacy Scanner -->
+      <div class="column">
+        <!-- Inventory Panel -->
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>Stok Pangan &amp; Inventaris Rumah</h2>
+              <p>Pantau ketersediaan logistik harian &amp; peringatan stok menipis</p>
+            </div>
+          </div>
+          <div class="inventory-list" id="inventoryContainer"></div>
+        </section>
+
+        <!-- Community & Family Tasks Panel -->
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>Agenda Gotong Royong &amp; Tugas Rumah</h2>
+              <p>Koordinasi tugas anggota rumah dan kegiatan warga</p>
+            </div>
+          </div>
+
+          <form id="taskForm" class="inline-form task-form">
+            <input type="text" id="taskTitle" placeholder="Tambah agenda atau tugas baru..." required />
+            <input type="text" id="taskAssignee" placeholder="PIC / Warga" value="Semua Anggota" />
+            <select id="taskPriority">
+              <option value="High">Prioritas Tinggi</option>
+              <option value="Medium" selected>Prioritas Sedang</option>
+              <option value="Low">Prioritas Rendah</option>
+            </select>
+            <button type="submit" class="btn btn-primary">+ Tambah</button>
+          </form>
+
+          <div class="task-list" id="tasksContainer"></div>
+        </section>
+
+        <!-- Anti-Leak & Privacy Guard Inspector -->
+        <section class="panel panel-security">
+          <div class="panel-header">
+            <div>
+              <h2>Privacy Guard &amp; Anti-Leak Scanner</h2>
+              <p>Uji teks atau konfigurasi agar tidak membocorkan path device lokal atau API Key ke publik</p>
+            </div>
+          </div>
+          <div class="security-box">
+            <textarea
+              id="privacyTestInput"
+              rows="2"
+              placeholder="Tempel teks/log untuk diuji (contoh: C:\Users\username\AppData\Local\Programs\Rumah Kita atau sk-proj-12345)..."
+            ></textarea>
+            <div class="security-actions">
+              <button type="button" class="btn btn-secondary" id="runPrivacyScanBtn">Periksa Kebocoran Data</button>
+              <span id="privacyScanResult" class="scan-status">Siap memindai.</span>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <span><strong>Rumah Kita v1.2.0</strong> — Open-Source Project under MIT License</span>
+      <span>100% Local-First Architecture &bull; Zero Device Data Leakage &bull; <a href="https://github.com/NopeKagennnou/rumah-kita" target="_blank" rel="noopener noreferrer">GitHub Repository</a></span>
+    </footer>
+  </div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
